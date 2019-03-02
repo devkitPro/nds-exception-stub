@@ -27,7 +27,7 @@ GRAPHICS	:=	gfx
 # options for code generation
 #---------------------------------------------------------------------------------
 
-ARCH	:=	-mthumb -mthumb-interwork -flto -Os
+ARCH	:=	-mthumb -mthumb-interwork -Os
 
 CFLAGS	:=	-g -Wall \
  		-march=armv5te -mtune=arm946e-s -fomit-frame-pointer\
