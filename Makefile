@@ -38,7 +38,7 @@ CFLAGS	+=	$(INCLUDE) -DARM9
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions
 
 ASFLAGS	:=	-g $(ARCH)
-LDFLAGS	=	-nostartfiles -T../exceptionstub.ld -Wl,--section-start,.crt0=0x2ffa000 -g $(ARCH) -Wl,-Map,$(notdir $*.map)
+LDFLAGS	=	-nostartfiles -T../exceptionstub.ld -Wl,--section-start,.crt0=0x2ffa000 -Wl,--no-warn-rwx-segments -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project (order is important)
