@@ -25,6 +25,7 @@
 #include <nds/ndstypes.h>
 #include <nds/memory.h>
 
+#include <nds/timers.h>
 #include <nds/arm9/video.h>
 #include <nds/arm9/console.h>
 #include <nds/arm9/exceptions.h>
@@ -224,7 +225,7 @@ void guruMeditation() {
 			exceptionAddress = getExceptionAddress( codeAddress, thumbState);
 		else
 			exceptionAddress = codeAddress;
-			
+
 	} else {
 		if (thumbState)
 			offset = 2;
@@ -251,7 +252,35 @@ void guruMeditation() {
 	}
 }
 
-void __attribute__((weak)) initSystem(void);
+//---------------------------------------------------------------------------------
+void initSystem(void) {
+//---------------------------------------------------------------------------------
+
+	register int i;
+	// stop timers and dma
+	for (i=0; i<4; i++)
+	{
+		DMA_CR(i) = 0;
+		DMA_SRC(i) = 0;
+		DMA_DEST(i) = 0;
+		TIMER_CR(i) = 0;
+		TIMER_DATA(i) = 0;
+	}
+
+	// clear video display registers
+	dmaFillWords(0, (void*)0x04000000, 0x56);
+	dmaFillWords(0, (void*)0x04001008, 0x56);
+
+	videoSetModeSub(0);
+
+	vramDefault();
+
+	VRAM_E_CR = 0;
+	VRAM_F_CR = 0;
+	VRAM_G_CR = 0;
+	VRAM_H_CR = 0;
+	VRAM_I_CR = 0;
+}
 
 //---------------------------------------------------------------------------------
 void excepthandler() {
