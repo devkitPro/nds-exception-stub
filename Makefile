@@ -27,18 +27,19 @@ GRAPHICS	:=	gfx
 # options for code generation
 #---------------------------------------------------------------------------------
 
-ARCH	:=	-mthumb -mthumb-interwork -Os
+ARCH	:=	-march=armv5te -mtune=arm946e-s -mthumb
 
-CFLAGS	:=	-g -Wall \
- 		-march=armv5te -mtune=arm946e-s -fomit-frame-pointer\
-		-ffast-math \
+CFLAGS	:=	-g -Wall -Os\
+		-ffunction-sections -fdata-sections \
 		$(ARCH)
 
 CFLAGS	+=	$(INCLUDE) -DARM9
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions
 
 ASFLAGS	:=	-g $(ARCH)
-LDFLAGS	=	-nostartfiles -T../exceptionstub.ld -Wl,--section-start,.crt0=0x2ffa000 -Wl,--no-warn-rwx-segments -g $(ARCH) -Wl,-Map,$(notdir $*.map)
+LDFLAGS	=	-nostartfiles -T../exceptionstub.ld -Wl,--section-start,.crt0=0x2ffa000 \
+		-Wl,--gc-sections,--nmagic,--use-blx,--no-warn-rwx-segments \
+		-g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project (order is important)
